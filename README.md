@@ -88,4 +88,6 @@ cl tetris.cpp /Fe:tetris.exe
 - **Vikas Bhabhor**
 
 ## License
-This project is open-source and available under the MIT License.
+This project is open-source and free to use for educational and personal projects.
+
+Enjoy the game!
