@@ -1,15 +1,4 @@
-# Tetris Game
-➖➖➖➖➖➖➖🟦🟦➖
-➖➖➖➖➖➖➖🟦➖➖
-➖➖➖➖➖➖➖🟦➖➖
-➖➖➖➖➖➖➖➖➖➖
-➖➖🟩🟩➖🟧➖➖➖➖
-➖🟩🟩🟧🟧🟧➖➖➖➖
-➖🟪🟪🟪🟦🟦🟦➖➖➖
-🟨🟨🟪🟪🟥🟥🟦➖🟨🟨
-🟨🟨🟪🟪🟪🟥🟥➖🟨🟨
-⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️
-⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️
+# Tetris Game🟥🟥🟥🟥
 
 ## Overview
 This is a simple console-based Tetris game written in C++ using the Windows API for rendering. It features a playable grid, multiple tetromino shapes, real-time user input, scoring, and a high score tracking system. The game is played directly in the terminal with smooth graphics using colored tetrominoes.
