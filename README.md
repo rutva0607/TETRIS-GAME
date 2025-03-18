@@ -1,5 +1,11 @@
 # Tetris Game🟥🟥🟥🟥
 
+## Created By
+- **Rutva Mehta**
+- **Khush Hingrajiya**
+- **Manthan Kanetiya**
+- **Vikas Bhabhor**
+
 ## Overview
 This is a simple console-based Tetris game written in C++ using the Windows API for rendering. It features a playable grid, multiple tetromino shapes, real-time user input, scoring, and a high score tracking system. The game is played directly in the terminal with smooth graphics using colored tetrominoes.
 
@@ -81,11 +87,7 @@ cl tetris.cpp /Fe:tetris.exe
 - Add multiplayer support for competitive play.
 - Optimize performance for better response time.
 
-## Created By
-- **Rutva Mehta**
-- **Khush Hingrajiya**
-- **Manthan Kanetiya**
-- **Vikas Bhabhor**
+
 
 ## License
 This project is open-source and free to use for educational and personal projects.
