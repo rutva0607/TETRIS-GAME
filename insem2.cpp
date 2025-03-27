@@ -1,28 +1,20 @@
 #include <iostream>
 #include <vector>
-#include <conio.h>    // For _kbhit(), _getch()
-#include <windows.h>  // For Sleep, SetConsoleCursorPosition, and colors
+#include <conio.h>
+#include <windows.h>
 #include <ctime>
 #include <sstream>
 #include <string>
 #include <cstdlib>
 using namespace std;
-
-//-----------------------------------------------------------------------------------
-//                              GLOBAL CONSTANTS (Updated Grid Size)
-//-----------------------------------------------------------------------------------
-const int WIDTH = 15;   // Increased grid width
-const int HEIGHT = 25;  // Increased grid height
+const int WIDTH = 15;   
+const int HEIGHT = 25;  
 char grid[HEIGHT][WIDTH];
 int score = 0;
-int highScore = 0;      // Global high score persists across sessions
-
-// Global console handle (for colors and cursor positioning)
+int highScore = 0;
 HANDLE hConsole;
 
-//-----------------------------------------------------------------------------------
-//                              TETROMINO SHAPES
-//-----------------------------------------------------------------------------------
+
 vector<vector<vector<int>>> tetrominoes = {
     // I shape (ID = 1)
     {{1, 1, 1, 1}},
@@ -46,80 +38,72 @@ struct Tetromino {
 };
 
 Tetromino currentTetromino;
-
-//-----------------------------------------------------------------------------------
-//                              UTILITY FUNCTIONS
-//-----------------------------------------------------------------------------------
 void initializeGrid() {
     for (int i = 0; i < HEIGHT; i++)
         for (int j = 0; j < WIDTH; j++)
             grid[i][j] = '.';
 }
 
-// Sets the console cursor position (to update the screen in place)
+
 void setCursorPosition(int x, int y) {
     COORD pos = { (SHORT)x, (SHORT)y };
     SetConsoleCursorPosition(hConsole, pos);
 }
 
-// Maps a cell's value ('1'..'7') to a specific console color.
+
 void setColorForCell(char c) {
     switch (c) {
-        case '1': // I shape: cyan
+        case '1': 
             SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
             break;
-        case '2': // O shape: red
+        case '2': 
             SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
             break;
-        case '3': // T shape: green
+        case '3':
             SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
             break;
-        case '4': // S shape: yellow
+        case '4': 
             SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
             break;
-        case '5': // Z shape: magenta
+        case '5':
             SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
             break;
-        case '6': // J shape: blue
+        case '6': 
             SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
             break;
-        case '7': // L shape: light cyan
+        case '7': 
             SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
             break;
-        default:  // Empty cell '.'
+        default:  
             SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
             break;
     }
 }
 
-//-----------------------------------------------------------------------------------
-//                              TITLE SCREEN
-//-----------------------------------------------------------------------------------
 string showTitleScreen() {
     system("cls");
 
-    // Set up a creative welcome screen using Unicode box-drawing characters and multiple colors.
-    // Top border in bright white
+    
     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
     cout << "==========================================\n";
 
-    // Title line with a different color (e.g., yellow)
+    
     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
     cout << "|            WELCOME TO TETRIS           |\n";
 
-    // Decorative separator in bright white
+   
     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
     cout << "==========================================\n";
 
-    // Tagline in light green
+    
     SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
     cout << "|   Prepare for the ultimate challenge!  |\n";
 
-    // Bottom border in bright white
+    
     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
     cout << "==========================================\n\n\n";
 
-    // Prompt for user name in default bright white
+    
     cout << "Enter your name: ";
     string userName;
     getline(cin, userName);
@@ -133,17 +117,14 @@ string showTitleScreen() {
     return userName;
 }
 
-//-----------------------------------------------------------------------------------
-//                              RENDERING
-//-----------------------------------------------------------------------------------
 void printGrid(const Tetromino &currentTetromino) {
-    // Create a temporary buffer from the grid
+    
     char temp[HEIGHT][WIDTH];
     for (int i = 0; i < HEIGHT; i++)
         for (int j = 0; j < WIDTH; j++)
             temp[i][j] = grid[i][j];
 
-    // Overlay the active tetromino onto the buffer
+    
     for (int i = 0; i < currentTetromino.shape.size(); i++) {
         for (int j = 0; j < currentTetromino.shape[i].size(); j++) {
             if (currentTetromino.shape[i][j])
@@ -151,14 +132,13 @@ void printGrid(const Tetromino &currentTetromino) {
         }
     }
 
-    // Update the screen in place
+    
     setCursorPosition(0, 0);
 
-    // Top border
+ 
     for (int i = 0; i < WIDTH + 2; i++) cout << "#";
     cout << "\n";
 
-    // Print each row with side borders
     for (int i = 0; i < HEIGHT; i++) {
         cout << "#";
         for (int j = 0; j < WIDTH; j++) {
@@ -174,14 +154,14 @@ void printGrid(const Tetromino &currentTetromino) {
         cout << "#\n";
     }
     
-    // Bottom border
+    
     for (int i = 0; i < WIDTH + 2; i++) cout << "#";
     cout << "\n";
 
-    // Display score and high score
+    
     cout << "Score: " << score << "    |    High Score: " << highScore << "\n";
 
-    // Show control instructions for improved UX
+    
     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
     cout << "\nControls:\n";
     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
@@ -190,9 +170,7 @@ void printGrid(const Tetromino &currentTetromino) {
     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 }
 
-//-----------------------------------------------------------------------------------
-//                              GAME LOGIC
-//-----------------------------------------------------------------------------------
+
 bool canMove(int dx, int dy, const vector<vector<int>> &shape) {
     for (int i = 0; i < shape.size(); i++) {
         for (int j = 0; j < shape[i].size(); j++) {
@@ -243,7 +221,7 @@ void clearLines() {
             for (int col = 0; col < WIDTH; col++)
                 grid[0][col] = '.';
             score += 100;
-            i++; // Re-check the same row after shifting down.
+            i++; 
         }
     }
 }
@@ -253,13 +231,13 @@ void spawnTetromino() {
     currentTetromino.x = WIDTH / 2 - currentTetromino.shape[0].size() / 2;
     currentTetromino.y = 0;
     while (_kbhit()) _getch();
-    // Let runGameSession() decide game over.
+    
 }
 
 void handleInput() {
     while (_kbhit()) {
         int ch = _getch();
-        if (ch == 224) {  // Arrow keys
+        if (ch == 224) {  
             int arrow = _getch();
             if (arrow == 75 && canMove(-1, 0, currentTetromino.shape))
                 currentTetromino.x--;
@@ -270,7 +248,6 @@ void handleInput() {
             else if (arrow == 72)
                 rotateTetromino();
         } else {
-            // WASD controls and Spacebar
             if (ch == 'a' || ch == 'A') {
                 if (canMove(-1, 0, currentTetromino.shape))
                     currentTetromino.x--;
@@ -282,7 +259,7 @@ void handleInput() {
                     currentTetromino.y++;
             } else if (ch == 'w' || ch == 'W') {
                 rotateTetromino();
-            } else if (ch == 32) { // Spacebar for hard drop
+            } else if (ch == 32) { 
                 while (canMove(0, 1, currentTetromino.shape))
                     currentTetromino.y++;
             }
@@ -292,7 +269,7 @@ void handleInput() {
 }
 
 int runGameSession() {
-    system("cls"); // Clear screen for a fresh session.
+    system("cls"); 
     initializeGrid();
     score = 0;
     spawnTetromino();
@@ -301,7 +278,7 @@ int runGameSession() {
         return score;
     }
     DWORD lastFallTime = GetTickCount();
-    int fallSpeed = 500; // Milliseconds per fall step
+    int fallSpeed = 500; 
 
     while (true) {
         printGrid(currentTetromino);
@@ -325,9 +302,6 @@ int runGameSession() {
     }
 }
 
-//-----------------------------------------------------------------------------------
-//                              MAIN
-//-----------------------------------------------------------------------------------
 int main() {
     srand((unsigned)time(0));
     hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -357,7 +331,7 @@ int main() {
             }
             Sleep(50);
         }
-        system("cls"); // Clear screen before next session.
+        system("cls");
     }
     
     system("cls");
