@@ -16,10 +16,6 @@ This is a simple console-based Tetris game written in C++ using the Windows API 
 - **High Score retention**: Keeps track of the highest score achieved in a session.
 - **Intuitive controls**: Supports both arrow keys and WASD for movement.
 - **Hard drop feature**: Pressing spacebar instantly places the tetromino at the lowest available position.
-- **Next piece preview**: Displays the upcoming tetromino to plan ahead.
-- **Hold piece feature**: Allows swapping the current tetromino with a saved one.
-- **Adjustable speed levels**: Increases difficulty as the player progresses.
-- **Pause and Resume**: Players can pause the game and resume later.
 
 ## Controls
 - **Left Arrow / A** → Move tetromino left
