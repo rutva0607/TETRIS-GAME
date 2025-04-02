@@ -40,9 +40,6 @@ This is a simple console-based Tetris game written in C++ using the Windows API 
 - **Windows API (`HANDLE hConsole`)**: Used for console output manipulation, such as cursor positioning and color changes.
 - **Integer Variables (`int score`, `int highScore`)**: Keep track of the player's current score and highest score achieved in a session.
 - **Boolean (`bool exitGame`)**: Determines whether the game should continue running or exit.
-- **Queue (`queue<Tetromino> nextPieces`)**: Stores upcoming tetrominoes for preview and better gameplay experience.
-- **Set (`set<int> clearedRows`)**: Keeps track of rows that need to be removed after a tetromino is placed.
-- **Stack (`stack<Tetromino> holdPiece`)**: Allows the player to store a tetromino and swap it later.
 - **Keyboard Input Handling (`_kbhit()`, `_getch()`)**: Used to detect and process user key presses in real-time.
 - **Time Management (`DWORD lastFallTime`)**: Keeps track of the timing for automatic tetromino falling.
 
